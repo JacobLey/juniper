@@ -1,0 +1,90 @@
+name: Test
+on:
+  - push
+  - pull_request:
+      type:
+        - opened
+        - synchronize
+        - reopened
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/cache@v3
+        id: cache-install
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+
+      - if: steps.cache-install.outputs.cache-hit != 'true'
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - if: steps.cache-install.outputs.cache-hit != 'true'
+        run: npm ci
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: installed
+          path: |
+            **
+            !.git
+          retention-days: 1
+
+  lint:
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: installed
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - uses: actions/cache@v3
+        id: cache-eslint
+        with:
+          path: .eslintcache
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+
+      - run: npm run lint -- --cache-strategy=content
+
+  build:
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: installed
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - run: npm tsc
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: built
+          path: dist
+          retention-days: 1
+
+  test:
+    needs:
+      - install
+      - build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: installed
+      - uses: actions/download-artifact@v3
+        with:
+          name: built
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - run: npm test
