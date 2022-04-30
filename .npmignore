@@ -1,0 +1,6 @@
+*
+!/dist/**
+!/index.d.ts
+/dist/tests
+/dist/**/*.map
+/dist/tsconfig.tsbuildinfo
