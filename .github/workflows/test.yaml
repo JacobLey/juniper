@@ -1,11 +1,13 @@
 name: Test
 on:
-  - push
-  - pull_request:
-      type:
-        - opened
-        - synchronize
-        - reopened
+  push:
+    branches-ignore:
+      - gh-pages
+  pull_request:
+    type:
+      - opened
+      - synchronize
+      - reopened
 jobs:
   install:
     runs-on: ubuntu-latest
