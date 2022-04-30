@@ -74,7 +74,7 @@ jobs:
           tar -xf installed.tgz
           rm installed.tgz
 
-      - run: npm tsc
+      - run: npm run tsc
 
       - run: tar -zcf built.tgz ./dist
       - uses: actions/upload-artifact@v3
