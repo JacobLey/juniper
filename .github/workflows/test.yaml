@@ -27,12 +27,11 @@ jobs:
       - if: steps.cache-install.outputs.cache-hit != 'true'
         run: npm ci
 
+      - run: tar -zcf installed.tgz --exclude=.git .
       - uses: actions/upload-artifact@v3
         with:
           name: installed
-          path: |
-            **
-            !.git
+          path: installed.tgz
           retention-days: 1
 
   lint:
@@ -45,6 +44,10 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
+
+      - run: |
+          tar -xf installed.tgz
+          rm installed.tgz
 
       - uses: actions/cache@v3
         id: cache-eslint
@@ -65,12 +68,17 @@ jobs:
         with:
           node-version: 16
 
+      - run: |
+          tar -xf installed.tgz
+          rm installed.tgz
+
       - run: npm tsc
 
+      - run: tar -zcf built.tgz ./dist
       - uses: actions/upload-artifact@v3
         with:
           name: built
-          path: dist
+          path: built.tgz
           retention-days: 1
 
   test:
@@ -88,5 +96,12 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
+
+      - run: |
+          tar -xf installed.tgz
+          rm installed.tgz
+
+          tar -xf built.tgz
+          rm built.tgz
 
       - run: npm test

@@ -2,11 +2,10 @@
 /*.log*
 **/.DS_Store
 
-node_modules
+/node_modules/**
 
-.nyc-cache
-.nyc_output
-coverage
-dist
-nyc
-tsconfig.tsbuildinfo
+/.nyc-cache/**
+/.nyc_output/**
+/coverage/**
+/dist/**
+/nyc/**
