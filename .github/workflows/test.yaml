@@ -27,7 +27,9 @@ jobs:
       - if: steps.cache-install.outputs.cache-hit != 'true'
         run: npm ci
 
-      - run: tar -zcf installed.tgz --exclude=.git .
+      - run: |
+          touch installed.tgz
+          tar -zcf installed.tgz --exclude=installed.tgz --exclude=.git .
       - uses: actions/upload-artifact@v3
         with:
           name: installed
