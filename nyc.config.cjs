@@ -17,6 +17,6 @@ module.exports = {
         statements: [100, 95],
     },
 
-    'exclude': ['tests/**', 'node_modules/**'],
+    'exclude': ['src/tests/**', 'node_modules/**'],
     'cacheDir': '.nyc-cache',
 };

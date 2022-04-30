@@ -4,10 +4,9 @@ const nycConfig = require('./nyc.config.cjs');
 
 module.exports = {
     ...nycConfig,
-    extensions: ['js', 'cjs'],
+    extensions: ['js', 'cjs', '.mjs'],
     exclude: [
         '**/*.ts',
-        '**/.next/**',
         'node_modules/**',
     ],
     delete: true,
