@@ -1,6 +1,7 @@
 *
 !/dist/**
 !/index.d.ts
+/dist/scripts
 /dist/tests
 /dist/**/*.map
 /dist/.tsbuildinfo
