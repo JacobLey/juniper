@@ -31,9 +31,11 @@ if (!stillExists.stdout) {
     await exec(`npm version --git-tag-version=false ${hashVersion}`);
 
     // eslint-disable-next-line node/no-process-env
-    await exec(`npm publish${process.env.GIT_BRANCH === 'main' ? ' --tag canary' : ''}`);
+    await exec(`npm publish --tag=${process.env.GIT_BRANCH === 'main' ? 'canary' : 'ignore'}`);
 
     // eslint-disable-next-line node/no-process-env
     await exec(`npm version --git-tag-version=false 0.0.0-${process.env.GIT_SHA!}`);
-    await exec('npm publish');
+    await exec('npm publish --tag=ignore');
+
+    await exec(`npm dist-tag rm ${packageName} ignore`);
 }

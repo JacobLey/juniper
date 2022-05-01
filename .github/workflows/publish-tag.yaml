@@ -22,10 +22,12 @@ jobs:
           cd ./package
           npm version --git-tag-version=false ${{ github.ref_name }}
 
-      - run: npm publish ./package
+      - run: |
+          npm publish ./package --tag=ignore
+          npm dist-tag rm schema-forge ignore
 
       - run: |
           if [ -z $(npm view schema-forget@'>${{ github.ref_name }}' version) ]
             then
-              npm dist-tag schema-forge@${{ github.ref_name }} latest
+              npm dist-tag add schema-forge@${{ github.ref_name }} latest
           fi
