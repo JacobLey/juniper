@@ -1,0 +1,31 @@
+name: Publish Tag
+on:
+  push:
+    tags:
+      - v*.*.*
+
+jobs:
+  publish-alpha:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - run: echo //registry.npmjs.org/:_authToken=${{ secrets.NPM_AUTH_TOKEN }} >> ~/.npmrc
+
+      - run: |
+          curl -o package.tgz $(npm view schema-forge@0.0.0-${{ github.sha }} dist.tarball)
+          tar -xf package.tgz
+
+      - run: |
+          cd ./package
+          npm version --git-tag-version=false ${{ github.ref_name }}
+
+      - run: npm publish ./package
+
+      - run: |
+          if [ -z $(npm view schema-forget@'>${{ github.ref_name }}' version) ]
+            then
+              npm dist-tag schema-forge@${{ github.ref_name }} latest
+          fi

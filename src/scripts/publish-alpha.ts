@@ -32,4 +32,8 @@ if (!stillExists.stdout) {
 
     // eslint-disable-next-line node/no-process-env
     await exec(`npm publish${process.env.GIT_BRANCH === 'main' ? ' --tag canary' : ''}`);
+
+    // eslint-disable-next-line node/no-process-env
+    await exec(`npm version --git-tag-version=false 0.0.0-${process.env.GIT_SHA!}`);
+    await exec('npm publish');
 }
