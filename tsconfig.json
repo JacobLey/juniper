@@ -38,6 +38,7 @@
         "sourceMap": true,
         "strict": true,
         "target": "ESNext",
+        "tsBuildInfoFile": "dist/.tsbuildinfo",
         "useDefineForClassFields": true,
         "useUnknownInCatchVariables": true
     },
