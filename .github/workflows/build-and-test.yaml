@@ -1,13 +1,11 @@
-name: Test
+name: Build and Test
 on:
-  push:
-    branches-ignore:
-      - gh-pages
   pull_request:
     type:
       - opened
       - synchronize
       - reopened
+  workflow_call: {}
 jobs:
   install:
     runs-on: ubuntu-latest
@@ -108,35 +106,3 @@ jobs:
           rm built.tgz
 
       - run: npm test
-
-  publish-alpha:
-    if: github.event_name == 'push'
-    needs:
-      - test
-      - lint
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/download-artifact@v3
-        with:
-          name: installed
-      - uses: actions/download-artifact@v3
-        with:
-          name: built
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
-
-      - run: |
-          tar -xf installed.tgz
-          rm installed.tgz
-
-          tar -xf built.tgz
-          rm built.tgz
-
-      - run: echo //registry.npmjs.org/:_authToken=${{ secrets.NPM_AUTH_TOKEN }} >> ~/.npmrc
-
-      - run: node ./dist/scripts/publish-alpha.js
-        env:
-          GIT_SHA: ${{ github.sha }}
-          GIT_BRANCH: ${{ github.ref_name }}
-          GIT_HASH: ${{ secrets.SuperSecret }}

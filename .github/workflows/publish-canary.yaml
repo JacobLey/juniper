@@ -1,0 +1,37 @@
+name: Publish Canary
+on:
+  push:
+    branches-ignore:
+      - gh-pages
+jobs:
+  build-and-test:
+    uses: ./.github/workflows/test.yml
+
+  publish-alpha:
+    needs:
+      - build-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: installed
+      - uses: actions/download-artifact@v3
+        with:
+          name: built
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - run: |
+          tar -xf installed.tgz
+          rm installed.tgz
+
+          tar -xf built.tgz
+          rm built.tgz
+
+      - run: echo //registry.npmjs.org/:_authToken=${{ secrets.NPM_AUTH_TOKEN }} >> ~/.npmrc
+
+      - run: node ./dist/scripts/publish-alpha.js
+        env:
+          GIT_SHA: ${{ github.sha }}
+          GIT_BRANCH: ${{ github.ref_name }}
