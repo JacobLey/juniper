@@ -17,7 +17,7 @@
 - [Usage](#usage)
 - [Schemas](#schemas)
 - [API](#api)
-- [Motivation (The JSON Schema Problem)](#motivation-the-json-schema-problem-)
+- [Motivation (The JSON Schema Problem)](#motivation-the-json-schema-problem)
 - [Objectives](#objectives)
 - [Limitations](#limitations)
 - [Comparisons](#comparisons)
@@ -57,7 +57,7 @@ const schema = objectSchema({
     },
     required: ['foo'],
     additionalProperties: false,
-}).nullable();
+});
 
 /**
  * {
@@ -142,7 +142,7 @@ const bool = booleanSchema().anyOf([
 
 const obj = objectSchema({
     properties: {
-        foo: bool,
+        foo: 123,
     },
     // FOO does not exist in properties
     required: ['FOO'],
@@ -215,7 +215,7 @@ Juniper instances are immutable, so every method returns a _clone_ of the origin
 
 ### Generic Schema helper methods
 
-In addition to those methods, which all map to a JSON Schema attribute, the following methods are provided:
+The following helper methods are provided for typing/exporting the JSON Schema from a Juniper instance:
 * `toJSON`
   * Renders the JSON Schema document. Document should be immediately passed to a validator or serializer. The exact structure of the document is not guaranteed, and should not be modified further.
   * Options
@@ -227,8 +227,70 @@ In addition to those methods, which all map to a JSON Schema attribute, the foll
   * Parameters
     * `path` - `string` Path to where schema is _actually_ stored in document. Final document structure is implementation specific and not verifiable.
   * If referencing a JSON Schema entirely out of control, it is best to use the `ref` method on a `CustomSchema`. Otherwise it is designed for instances where common schemas are pulled into a reusable section, such as [OpenApi's `components`](https://swagger.io/docs/specification/components/) section.
+  * Example:
+    ```ts
+    import { stringSchema, objectSchema } from 'juniper';
+
+    // string
+    const idSchema = stringSchema({
+        title: 'Custom ID',
+        pattern: '^[a-z]{32}$',
+    });
+
+    // { id: string } | null
+    const resourceSchema = objectSchema({
+        properties: {
+            id: idSchema.ref('#/components/schemas/id')
+        },
+        required: ['id'],
+    });
+
+    const nullableResourceSchema = resourceSchema.ref('#/components/schemas/id').nullable();
+
+    console.log({
+        components: {
+            schemas: {
+                id: idSchema.toJSON({ openApi30: true }),
+                resource: resourceSchema.toJSON({ openApi30: true }),
+                nullableResource: nullableResourceSchema.toJSON({ openApi30: true }),
+            },
+        },
+    });
+    /**
+     * {
+     *   components: {
+     *     schemas: {
+     *       id: {
+     *          type: 'string',
+     *          title: 'Custom ID',
+     *          pattern: '^[a-z]{32}$'
+     *       },
+     *       resource: {
+     *          type: 'object',
+     *          properties: {
+     *            id: { $ref: '#/components/schemas/id' }
+     *          },
+     *          required: ['id'],
+     *       },
+     *       nullableResource: {
+     *          $ref: '#/components/schemas/resource',
+     *          nullable: true
+     *       },
+     *     }
+     *   }
+     * }
+     */
+    ```
+    Note the above example is not 100% compliant with OpenAPI spec. The `nullableResource` is _merged_ with the `$ref` (allowed in Draft 2020-12 and generally supported by most resolvers). Full compliance could be achieved by manually merging with a NullSchema:
+    ```ts
+    const nullableResourceSchema = mergeSchema().oneOf([
+        resourceSchema,
+        nullSchema
+    ]);
+    ```
+    The resulting types are identical.
 * `cast`
-  * Casts the Schema as a schema for a specific type. Use with caution as it can only be further chained with a `toJSON` call. Possibly useful when declaring a schema for javascript-generated objects that are not explicitly enforced in JSON Schema.
+  * Casts the instance as a schema for a specific type. Use with caution as it can only be further chained with a `toJSON` call. Possibly useful when declaring a schema for javascript-generated objects that are not explicitly enforced in JSON Schema.
   * Example:
     ```ts
     import { objectSchema } from 'juniper';
@@ -319,7 +381,7 @@ TupleSchema | [minContains](https://json-schema.org/draft/2020-12/json-schema-va
 TupleSchema | [(prepend)prefixItem](https://json-schema.org/understanding-json-schema/reference/array.html#tuple-validation) | ❌ | ❌ | ✅ | ❌
 
 ### Implementation Notes
-* ObjectSchema.patternProperties takes advantage of the string type of the keys. However the key itself is a regular expression pattern, and cannot be interpretted directly. So the key should be wrapped with the `PatternProperties` helper type.
+* ObjectSchema.patternProperties takes advantage of the string type of the keys. However the key itself is a regular expression pattern, and cannot be interpreted directly. So the key should be wrapped with the `PatternProperties` helper type.
   * Example:
     ```ts
     import { numberSchema, objectSchema, PatternProperties, SchemaType } from 'juniper';
@@ -339,8 +401,21 @@ TupleSchema | [(prepend)prefixItem](https://json-schema.org/understanding-json-s
     ```
 * StringSchema's `startsWith`, `endsWith`, and `contains` are just wrappers around the `pattern` property, but with special typescript handling.
 * TupleSchema is simply a wrapper around ArraySchema enforcing "strict" tuples (does not allow editing `items`). It is recommended but not necessary. Every TupleSchema is an ArraySchema.
+* JSON Schema interprets omitting `additionalProperties` as implied `additionalProperties=true`. The emitted typescript will only include this extra index typing when explicitly set to true.
+  * Example:
+    ```ts
+    import { objectSchema, SchemaType } from 'juniper';
 
-<a name="motivation-the-json-schema-problem-"></a>
+    const empty = objectSchema();
+    // Actually called `EmptyObject`, see "Helper Types".
+    type EmptyObject = SchemaType<typeof empty>;
+
+    const indexed = empty.additionalProperties(true);
+    // Record<string, unknown>
+    type IndexedObject = SchemaType<typeof indexed>;
+    ```
+
+<a name="motivation-the-json-schema-problem"></a>
 ## Motivation (The JSON Schema Problem)
 
 [Json Schema](https://json-schema.org/) is a powerful vocabulary for describing data formats that is both human and machine readable.

@@ -31,7 +31,6 @@ const hashVersion = `0.0.0-${gitSha}`;
 const stillExists = await exec(`npm view ${packageName}@${hashVersion} version`);
 // Possible version already exists if existing commit is pushed to new branch.
 if (!stillExists.stdout) {
-    // eslint-disable-next-line node/no-process-env
     await exec(`npm version --git-tag-version=false ${hashVersion}`);
     await exec('npm publish --tag=ignore');
 
