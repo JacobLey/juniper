@@ -24,18 +24,21 @@ if (exists.stdout) {
 }
 
 // eslint-disable-next-line node/no-process-env
-const hashVersion = `${packageVersion}-canary-${process.env.GIT_SHA!.slice(0, 7)}`;
+const gitSha = process.env.GIT_SHA!;
+
+const hashVersion = `0.0.0-${gitSha}`;
+
 const stillExists = await exec(`npm view ${packageName}@${hashVersion} version`);
 // Possible version already exists if existing commit is pushed to new branch.
 if (!stillExists.stdout) {
+    // eslint-disable-next-line node/no-process-env
     await exec(`npm version --git-tag-version=false ${hashVersion}`);
+    await exec('npm publish --tag=ignore');
 
+    const canaryVersion = `${packageVersion}-canary-${gitSha.slice(0, 7)}`;
+    await exec(`npm version --git-tag-version=false ${canaryVersion}`);
     // eslint-disable-next-line node/no-process-env
     await exec(`npm publish --tag=${process.env.GIT_BRANCH === 'main' ? 'canary' : 'ignore'}`);
-
-    // eslint-disable-next-line node/no-process-env
-    await exec(`npm version --git-tag-version=false 0.0.0-${process.env.GIT_SHA!}`);
-    await exec('npm publish --tag=ignore');
 
     await exec(`npm dist-tag rm ${packageName} ignore`);
 }
