@@ -35,10 +35,13 @@ export type PatternProperties<T extends string> = string & {
 type BaseSchemaObject = Record<string, AbstractSchema<SchemaGenerics<unknown>>>;
 type BaseParameterSchemaObject = Record<string, boolean | AbstractSchema<SchemaGenerics<unknown>>>;
 
+type StripBoolean<
+    S extends boolean | Schema<unknown>
+> = S extends boolean ?
+    (S extends false ? typeof falseSchema : typeof trueSchema) :
+    Exclude<S, boolean>;
 type StripBooleanParameterSchemaObject<P extends BaseParameterSchemaObject> = {
-    [k in keyof P]: P[k] extends boolean ?
-        (P[k] extends false ? typeof falseSchema : typeof trueSchema) :
-        Exclude<P[k], boolean>;
+    [k in keyof P]: StripBoolean<P[k]>;
 };
 
 type NoIndexEmpty = Omit<EmptyObject, number | string>;
@@ -396,22 +399,31 @@ export class ObjectSchema<
      */
     public patternProperties<
         Pattern extends PatternProperties<string>,
-        S extends Schema<unknown>
+        S extends boolean | Schema<unknown>
     >(pattern: Pattern, schema: S): ObjectSchema<
         P, R, A,
         AbstractStrip<X, EmptyObject, unknown> &
-            Record<NonNullable<Pattern[typeof patternPropertiesSym]>, SchemaType<S>>,
+            Record<NonNullable<Pattern[typeof patternPropertiesSym]>, SchemaType<StripBoolean<S>>>,
         M, N
     > {
+        let patternSchema: Schema<unknown>;
+        if (schema === true) {
+            patternSchema = trueSchema;
+        } else if (schema === false) {
+            patternSchema = falseSchema;
+        } else {
+            patternSchema = schema;
+        }
+
         return (this as ObjectSchema<
             P, R, A,
             AbstractStrip<X, EmptyObject, unknown> &
-                Record<NonNullable<Pattern[typeof patternPropertiesSym]>, SchemaType<S>>,
+                Record<NonNullable<Pattern[typeof patternPropertiesSym]>, SchemaType<StripBoolean<S>>>,
             M, N
         >).clone({
             [patternPropertiesSym]: {
                 ...this.#patternProperties,
-                [pattern]: schema as unknown as AbstractSchema<SchemaGenerics<SchemaType<S>>>,
+                [pattern]: patternSchema as AbstractSchema<SchemaGenerics<SchemaType<StripBoolean<S>>>>,
             },
         });
     }
@@ -540,20 +552,22 @@ export class ObjectSchema<
         if (this.#maxProperties < Number.POSITIVE_INFINITY) {
             base.maxProperties = this.#maxProperties;
         }
-        const compositionProperties = params.composition?.properties ?? {};
-        const propertyEntries = Object.entries(this.#properties).filter(
-            ([key, val]) => val !== compositionProperties[key]
-        );
+
+        const schemaToProperty = (schema: AbstractSchema<SchemaGenerics<unknown>>): boolean | JsonSchema<unknown> => {
+            if (schema === trueSchema) {
+                return true;
+            }
+            if (schema === falseSchema) {
+                return false;
+            }
+            return ObjectSchema.getSchema(schema, params);
+        };
+
+        const propertyEntries = Object.entries(this.#properties);
         if (propertyEntries.length > 0) {
             const properties: Record<string, boolean | JsonSchema<unknown>> = {};
             for (const [key, val] of propertyEntries) {
-                if (val === trueSchema) {
-                    properties[key] = true;
-                } else if (val === falseSchema) {
-                    properties[key] = false;
-                } else {
-                    properties[key] = ObjectSchema.getSchema(val, params);
-                }
+                properties[key] = schemaToProperty(val);
             }
             base.properties = properties;
         }
@@ -614,9 +628,9 @@ export class ObjectSchema<
 
             const patternEntries = Object.entries(this.#patternProperties);
             if (patternEntries.length > 0) {
-                const patternProperties: Record<string, JsonSchema<unknown>> = {};
+                const patternProperties: Record<string, boolean | JsonSchema<unknown>> = {};
                 for (const [key, val] of patternEntries) {
-                    patternProperties[key] = ObjectSchema.getSchema(val, params);
+                    patternProperties[key] = schemaToProperty(val);
                 }
                 base.patternProperties = patternProperties;
             }

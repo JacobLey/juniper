@@ -408,6 +408,128 @@ export const ObjectSchemaSpec = {
         },
     },
 
+    'patternProperties': {
+
+        success() {
+
+            const strSchema = stringSchema();
+
+            const schema = objectSchema()
+                .patternProperties(
+                    'a' as PatternProperties<`${string}a${string}`>,
+                    numberSchema()
+                ).patternProperties(
+                    'b' as PatternProperties<`${string}b${string}`>,
+                    true
+                ).patternProperties(
+                    'c' as PatternProperties<`${string}c${string}`>,
+                    false
+                ).patternProperties(
+                    // Overwrites
+                    'a' as PatternProperties<`${string}abc${string}`>,
+                    strSchema
+                );
+            const withSubSchema = schema.allOf(
+                objectSchema({ additionalProperties: false })
+                    .patternProperties(
+                        'b' as PatternProperties<`${string}b${string}`>,
+                        false
+                    )
+                    .patternProperties(
+                        'c' as PatternProperties<`${string}c${string}`>,
+                        true
+                    ).patternProperties(
+                        'a' as PatternProperties<`${string}abc${string}`>,
+                        strSchema
+                    )
+            );
+
+            expectTypeOf<SchemaType<typeof schema>>().toEqualTypeOf<
+                Record<`${string}a${string}`, number> &
+                Record<`${string}abc${string}`, string> &
+                Record<`${string}b${string}`, unknown> &
+                Record<`${string}c${string}`, never>
+            >();
+            expectTypeOf<SchemaType<typeof withSubSchema>>().toEqualTypeOf<
+                Record<`${string}a${string}`, number> &
+                Record<`${string}abc${string}`, string> &
+                Record<`${string}b${string}`, never> &
+                Record<`${string}c${string}`, never>
+            >();
+
+            expect(schema.toJSON()).to.deep.equal({
+                type: 'object',
+                patternProperties: {
+                    a: { type: 'string' },
+                    b: true,
+                    c: false,
+                },
+            });
+            expect(withSubSchema.toJSON()).to.deep.equal({
+                type: 'object',
+                patternProperties: {
+                    a: { type: 'string' },
+                    b: true,
+                    c: false,
+                },
+                allOf: [
+                    {
+                        additionalProperties: false,
+                        patternProperties: {
+                            a: { type: 'string' },
+                            b: false,
+                            c: true,
+                        },
+                    },
+                ],
+            });
+
+            const validator = new Ajv({ strict: true }).compile(schema.toJSON());
+            const subSchemaValidator = new Ajv({ strict: true }).compile(withSubSchema.toJSON());
+            for (const [test, expected, subSchemaExpected] of [
+                [{}, true, true],
+                [
+                    { a: 'foobar' },
+                    true,
+                    true,
+                ],
+                [
+                    { b: [null] },
+                    true,
+                    false,
+                ],
+                [
+                    { c: [null] },
+                    false,
+                    false,
+                ],
+                [
+                    { ab: 'foobar' },
+                    true,
+                    false,
+                ],
+                [
+                    { ab: [null] },
+                    false,
+                    false,
+                ],
+                [
+                    { abc: 'xyz' },
+                    false,
+                    false,
+                ],
+                [
+                    { z: true },
+                    true,
+                    false,
+                ],
+            ] as const) {
+                expect(validator(test)).to.equal(expected);
+                expect(subSchemaValidator(test)).to.equal(subSchemaExpected);
+            }
+        },
+    },
+
     'dependentRequired': {
 
         success() {

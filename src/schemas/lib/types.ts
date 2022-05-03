@@ -9,6 +9,7 @@ export interface JsonSchema<T> {
     if?: JsonSchema<any>;
     else?: JsonSchema<any>;
     enum?: readonly unknown[];
+    patternProperties?: Record<string, boolean | JsonSchema<unknown>>;
     properties?: Record<string, boolean | JsonSchema<unknown>>;
     then?: JsonSchema<any>;
     type?: string | string[];
