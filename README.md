@@ -230,23 +230,23 @@ In addition to those methods, which all map to a JSON Schema attribute, the foll
 * `cast`
   * Casts the Schema as a schema for a specific type. Use with caution as it can only be further chained with a `toJSON` call. Possibly useful when declaring a schema for javascript-generated objects that are not explicitly enforced in JSON Schema.
   * Example:
-    * ```ts
-      import { objectSchema } from 'juniper';
+    ```ts
+    import { objectSchema } from 'juniper';
 
-      const kindSym = Symbol.for('kind');
+    const kindSym = Symbol.for('kind');
 
-      const userSchema = objectSchema({
-          properties: {
-              id: true,
-              email: true;
-          },
-          additionalProperties: false,
-      }).cast<{
-          [kindSym]: 'user';
-          id: string;
-          email: string;
-      }>();
-      ```
+    const userSchema = objectSchema({
+        properties: {
+            id: true,
+            email: true;
+        },
+        additionalProperties: false,
+    }).cast<{
+        [kindSym]: 'user';
+        id: string;
+        email: string;
+    }>();
+    ```
 * `metadata`
   * Allows attaching any custom data to a JSON Schema. For example, [`x-` prefix for OpenAPI](https://swagger.io/specification/#specification-extensions).
   * Only restriction is keys cannot overlap with existing implementations. `numberSchema().metadata('maximum', 5)` is forbidden.
@@ -403,55 +403,55 @@ Juniper has the following goals for generating JSON Schema:
   * As much as logically possible, outputted schemas should be compatible with multiple drafts.
   * For example, `if`/`then`/`else` conditionals are converted to [`anyOf` pairs](https://json-schema.org/understanding-json-schema/reference/conditionals.html#implication) when rendered with `openApi30: true`.
 * Catch errors at Build time
-  * Any validations enforcing schema structure should be applied at Typescript time. Code that successfully compiles to javascript should _never_ throw an error due to validation issues.
+  * Any validations enforcing schema structure should be applied at Typescript time. Code that successfully compiles to javascript should _never_ throw an error during runtime due to validation issues.
 
 ### Non-Goals
 The following are non-goals for Juniper.
 
 * Validation
   * Juniper is not a validation library. It will also not catch "impossible" schemas such as:
-  ```ts
-  import { stringSchema } from 'juniper';
+    ```ts
+    import { stringSchema } from 'juniper';
 
-  const neverValid = stringSchema({ minLength: 10, maxLength: 5 });
-  ```
+    const neverValid = stringSchema({ minLength: 10, maxLength: 5 });
+    ```
 * Predictable JSON Schema
   * Juniper applies various "optimizations" to schemas in order to provide strictness, and also ensure logically correct JSON Schema. As a result, the internal structure of a schema should be treated as opaque, and only passed to a serializer (e.g. `JSON.stringify`) or a validator (e.g. an `Ajv` instance). Attempting to read/modify the resulting JSON manually may have unexpected consequences.
   * Example:
-  ```ts
-  import { numberSchema } from 'juniper';
+    ```ts
+    import { numberSchema } from 'juniper';
 
-  const schema = numberSchema({
-      type: 'number',
-      multipleOf: 6,
-  })
-    .nullable()
-    .multipleOf(8)
-    .allOf(
-        numberSchema({ type: 'integer' })
-    );
+    const schema = numberSchema({
+        type: 'number',
+        multipleOf: 6,
+    })
+        .nullable()
+        .multipleOf(8)
+        .allOf(
+            numberSchema({ type: 'integer' })
+        );
 
-  /**
-   * "Expected" schema:
-   * {
-   *   "type": "number",
-   *   "multipleOf": 6,
-   *   "nullable": true,
-   *   "allOf": [{
-   *     "type": "integer",
-   *   }],
-   * }
-   */
-   console.log(json.toJSON())
-   /**
-   * Actual schema:
-   * {
-   *   "type": "integer",
-   *   "multipleOf": 24,
-   *   "allOf": [{}],
-   * }
-   */
-  ```
+    /**
+     * "Expected" schema:
+     * {
+     *   "type": "number",
+     *   "multipleOf": 6,
+     *   "nullable": true,
+     *   "allOf": [{
+     *     "type": "integer",
+     *   }],
+     * }
+     */
+    console.log(json.toJSON())
+    /**
+     * Actual schema:
+     * {
+     *   "type": "integer",
+     *   "multipleOf": 24,
+     *   "allOf": [{}],
+     * }
+     */
+    ```
 * Sensible Defaults
   * JSON Schema _does not_ apply any defaults to a schema that are not explicitly required. As such, properties like object's `required`, `additionalProperties` or `unevaluatedProperties` _must_ be set manually. Perhaps the one exception is `TupleSchema` which handles some values internally to ensure a strict tuple schema.
 * Performance
@@ -466,12 +466,12 @@ Juniper tries to emit Typescript types for related JSON Schemas. These types are
   * Typescript does not have a way of differentiating between `oneOf` or `anyOf`. Both will use the union pipe literal `|`.
 * Negation
   * The `not` keyword is not fully enforced in Typescript. The general TS equivalent `Exclude` does not enforce a specific type is not allowed.
-  * For example
-  ```ts
-  // Legal, although seems like it should not be.
-  const notAbc: Exclude<string, 'abc'> = 'abc';
-  const notAbc123: Exclude<{ abc: number }, { abc: 123 }> = { abc: 123 };
-  ```
+  * For example:
+    ```ts
+    // Legal, although seems like it should not be.
+    const notAbc: Exclude<string, 'abc'> = 'abc';
+    const notAbc123: Exclude<{ abc: number }, { abc: 123 }> = { abc: 123 };
+    ```
   * The general exception is enforcement that a schema cannot be null.
 
 <a name="comparisons"></a>
