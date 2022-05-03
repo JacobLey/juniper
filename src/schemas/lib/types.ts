@@ -50,7 +50,7 @@ export type SchemaType<
 } ? U : never;
 
 declare const emptyObject: unique symbol;
-export interface EmptyObject {
+export interface EmptyIndex {
     [key: string]: never;
     [emptyObject]?: never;
 }

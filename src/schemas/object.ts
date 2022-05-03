@@ -9,7 +9,7 @@ import {
 import type {
     AbstractStrip,
     ConditionalNullable,
-    EmptyObject,
+    EmptyIndex,
     IsNever,
     JsonSchema,
     Nullable,
@@ -44,8 +44,7 @@ type StripBooleanParameterSchemaObject<P extends BaseParameterSchemaObject> = {
     [k in keyof P]: StripBoolean<P[k]>;
 };
 
-type NoIndexEmpty = Omit<EmptyObject, number | string>;
-export type { NoIndexEmpty as EmptyObject };
+export type EmptyObject = Omit<EmptyIndex, number | string>;
 
 type StripString<T extends string> = AbstractStrip<T, string>;
 
@@ -61,25 +60,25 @@ type ObjectType<
     M,
     // Nullable
     N extends boolean,
-    Stripped extends AbstractStrip<P, EmptyObject> = AbstractStrip<P, EmptyObject>
+    Stripped extends AbstractStrip<P, EmptyIndex> = AbstractStrip<P, EmptyObject>
 > = Nullable<
     AbstractStrip<
         AbstractStrip<
-            AbstractStrip<X, EmptyObject, unknown> &
+            AbstractStrip<X, EmptyIndex, unknown> &
+            EmptyObject &
             M &
-            NoIndexEmpty &
             ([A] extends [true] ? Record<string, unknown> : unknown) &
             (A extends AbstractSchema<SchemaGenerics<infer V>> ? Record<string, V> : unknown) &
             (IsNever<Stripped> extends true ? unknown : (
                 Partial<{ [K in keyof Stripped]: SchemaType<Stripped[K]> }> &
                 Required<Pick<{ [K in keyof Stripped]: SchemaType<Stripped[K]> }, R>>
             )),
-            NoIndexEmpty,
-            NoIndexEmpty
+            EmptyObject,
+            EmptyObject
         >,
         // eslint-disable-next-line @typescript-eslint/ban-types
         {},
-        NoIndexEmpty
+        EmptyObject
     >,
     N
 >;
@@ -126,7 +125,7 @@ export class ObjectSchema<
     // Additional
     A extends boolean | AbstractSchema<SchemaGenerics<unknown>> = boolean,
     // Pattern Properties "regeXp"
-    X extends Record<string, unknown> = EmptyObject,
+    X extends Record<string, unknown> = EmptyIndex,
     // Merged
     M = unknown,
     // Nullable
@@ -263,7 +262,7 @@ export class ObjectSchema<
         A2 extends boolean | AbstractSchema<SchemaGenerics<unknown>> = boolean
     >(
         this: void,
-        options?: ObjectParams<P2, R2, A2, EmptyObject, unknown, false>
+        options?: ObjectParams<P2, R2, A2, EmptyIndex, unknown, false>
     ): ObjectSchema<P2, R2, A2> {
         return new ObjectSchema(options);
     }
@@ -402,7 +401,7 @@ export class ObjectSchema<
         S extends boolean | Schema<unknown>
     >(pattern: Pattern, schema: S): ObjectSchema<
         P, R, A,
-        AbstractStrip<X, EmptyObject, unknown> &
+        AbstractStrip<X, EmptyIndex, unknown> &
             Record<NonNullable<Pattern[typeof patternPropertiesSym]>, SchemaType<StripBoolean<S>>>,
         M, N
     > {
@@ -417,7 +416,7 @@ export class ObjectSchema<
 
         return (this as ObjectSchema<
             P, R, A,
-            AbstractStrip<X, EmptyObject, unknown> &
+            AbstractStrip<X, EmptyIndex, unknown> &
                 Record<NonNullable<Pattern[typeof patternPropertiesSym]>, SchemaType<StripBoolean<S>>>,
             M, N
         >).clone({
