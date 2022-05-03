@@ -1,7 +1,4 @@
-// This file is never executed, as it is only every imported as a type.
-// It is a convenient way to access a consistent `unique symbol`.
-
-export const typeCache = Symbol('type');
+export declare const typeCache: unique symbol;
 
 export interface JsonSchema<T> {
     [key: string]: unknown;
@@ -51,7 +48,7 @@ export type SchemaType<
     };
 } ? U : never;
 
-const emptyObject = Symbol('emptyObject');
+declare const emptyObject: unique symbol;
 export interface EmptyObject {
     [key: string]: never;
     [emptyObject]?: never;
@@ -111,7 +108,7 @@ export type ToBaseType<T> =
                     T extends readonly unknown[] ? ToBaseType<T[number]>[] :
                         T extends Record<string, unknown> ? Record<string, unknown> : T;
 
-const reservedWords = [
+declare const reservedWords: [
     // Generic
     '$schema',
     '$id',
@@ -167,5 +164,5 @@ const reservedWords = [
     'maxLength',
     'minLength',
     'pattern',
-] as const;
+];
 export type ReservedWords = typeof reservedWords[number];

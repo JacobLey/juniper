@@ -3,7 +3,7 @@ import {
     type ReservedWords,
     type SchemaType,
     type ToJsonParams,
-    typeCache,
+    type typeCache,
 } from './types.js';
 import { mergeAllOf, mergeRef } from './utils.js';
 
