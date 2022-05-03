@@ -1,6 +1,6 @@
 {
   "name": "juniper",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Dynamically generate Typescript emitting JSON Schemas",
   "engines": {
     "node": ">=14",
