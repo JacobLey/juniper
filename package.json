@@ -11,6 +11,16 @@
   "license": "MIT",
   "repository": "jacobley/juniper",
   "homepage": "https://github.com/jacobley/juniper#readme",
+  "keywords": [
+    "JSON",
+    "schema",
+    "json-schema",
+    "typescript",
+    "builder",
+    "static-types",
+    "open-api",
+    "swagger"
+  ],
   "sideEffects": false,
   "scripts": {
     "coverage": "npm run instrument && nyc mocha ./nyc/tests/unit",
