@@ -315,7 +315,6 @@ export abstract class AbstractSchema<
      * [custom keywords](https://json-schema.org/understanding-json-schema/reference/schema.html#id6).
      *
      * This method _may_ be used for self-implement missing features
-     * (such as [`patternProperties`](https://json-schema.org/understanding-json-schema/reference/object.html#id4))
      * but such usage may be disabled at any time (via implementation).
      *
      * @param {object} meta - custom metadata
@@ -347,6 +346,8 @@ export abstract class AbstractSchema<
      * expected to ignore any sibling properties.
      * Actual implementation is up to user (many `$ref` parsers will merge objects).
      *
+     * @see {@link https://json-schema.org/understanding-json-schema/structuring.html#ref}
+     *
      * @param {string} path - $ref path
      * @returns {AbstractSchema} schema
      */
@@ -377,6 +378,8 @@ export abstract class AbstractSchema<
     /**
      * Append an `allOf` restriction on schema.
      *
+     * @see {@link https://json-schema.org/understanding-json-schema/reference/combining.html#allof}
+     *
      * @param {object} schema - all of schema must be valid
      * @returns {object} schema
      */
@@ -390,6 +393,8 @@ export abstract class AbstractSchema<
 
     /**
      * Define a `anyOf` restriction on schema.
+     *
+     * @see {@link https://json-schema.org/understanding-json-schema/reference/combining.html#anyof}
      *
      * @param {object[]} schemas - any of schema must be valid
      * @returns {object} schema
@@ -468,6 +473,8 @@ export abstract class AbstractSchema<
 
     /**
      * Define a `oneOf` restriction on schema.
+     *
+     * @see {@link https://json-schema.org/understanding-json-schema/reference/combining.html#oneof}
      *
      * @param {object[]} schemas - one of schema must be valid
      * @returns {object} schema

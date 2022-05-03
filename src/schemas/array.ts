@@ -227,6 +227,8 @@ export class ArraySchema<
      *
      * Can only be set once.
      *
+     * @see {@link https://json-schema.org/understanding-json-schema/reference/array.html#items}
+     *
      * @param {Schema} items - items schema
      * @returns {ArraySchema} - newly typed array schema
      */
@@ -295,6 +297,8 @@ export class ArraySchema<
      * Can only be set once.
      *
      * __Not supported by OpenApi 3.0__.
+     *
+     * @see {@link https://json-schema.org/understanding-json-schema/reference/array.html#contains}
      *
      * @param {Schema} contains - contains schema
      * @returns {ArraySchema} - array schema

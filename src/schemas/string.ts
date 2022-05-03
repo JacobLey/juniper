@@ -244,7 +244,7 @@ export class StringSchema<
      * Does not alter typings.
      * Overwrites existing encoding.
      *
-     * @see {@link https://json-schema.org/understanding-json-schema/reference/non_json_data.html#id2}
+     * @see {@link https://json-schema.org/understanding-json-schema/reference/non_json_data.html#contentencoding}
      *
      * @param {string|null} contentEncoding - content encoding
      * @returns {StringSchema} string schema
@@ -262,7 +262,7 @@ export class StringSchema<
      * Does not alter typings.
      * Overwrites existing encoding.
      *
-     * @see {@link https://json-schema.org/understanding-json-schema/reference/non_json_data.html#id1}
+     * @see {@link https://json-schema.org/understanding-json-schema/reference/non_json_data.html#contentmediatype}
      *
      * @param {string|null} contentMediaType - content media type
      * @returns {StringSchema} string schema

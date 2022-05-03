@@ -381,6 +381,8 @@ export class ObjectSchema<
      * __Pattern Properties are not supported in OpenAPI 3.0__
      * They will be ignored entirely.
      *
+     * @see {@link https://json-schema.org/understanding-json-schema/reference/object.html#pattern-properties}
+     *
      * @example
      * const openApiVendor = objectSchema().patternProperties(
      *     '^x-' as PatternProperties<`x-${string}`>,
@@ -417,7 +419,7 @@ export class ObjectSchema<
     /**
      * Add a `dependentRequired` property to the JSON schema.
      *
-     * @see {@link https://json-schema.org/understanding-json-schema/reference/conditionals.html?highlight=dependent#dependentrequired}
+     * @see {@link https://json-schema.org/understanding-json-schema/reference/conditionals.html#dependentrequired}
      *
      * @param {string} key - property of object that if exists, `dependents` are required.
      * @param {string[]} dependents - dependents that are required if `key` exists.
@@ -449,7 +451,7 @@ export class ObjectSchema<
     /**
      * Add a `dependentSchema` property to the JSON schema.
      *
-     * @see {@link https://json-schema.org/understanding-json-schema/reference/conditionals.html?highlight=dependent#dependentschemas}
+     * @see {@link https://json-schema.org/understanding-json-schema/reference/conditionals.html#dependentschemas}
      *
      * @param {string} key - property of object that if exists, `schema` is applied.
      * @param {schema} schema - schema that is applied if `key` exists.
