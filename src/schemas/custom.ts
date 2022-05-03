@@ -7,7 +7,7 @@ import type { JsonSchema, SchemaType } from './lib/types.js';
  * __Any schema or typing is not validated__
  *
  * Useful for times when a schema document is controlled elsewhere, or gradual
- * adoption of Schema Forge.
+ * adoption of Juniper.
  *
  * Provided schema is returned as a shallow clone.
  */

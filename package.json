@@ -1,7 +1,7 @@
 {
-  "name": "schema-forge",
+  "name": "juniper",
   "version": "0.0.0",
-  "description": "Tools for dynamically generating typescript-compliant JSON Schemas",
+  "description": "Dynamically generate Typescript emitting JSON Schemas",
   "engines": {
     "node": ">=14",
     "npm": ">=7"
@@ -9,8 +9,8 @@
   "type": "module",
   "author": "jacobley",
   "license": "MIT",
-  "repository": "jacobley/schema-forge",
-  "homepage": "https://github.com/jacobley/schema-forge#readme",
+  "repository": "jacobley/juniper",
+  "homepage": "https://github.com/jacobley/juniper#readme",
   "sideEffects": false,
   "scripts": {
     "coverage": "npm run instrument && nyc mocha ./nyc/tests/unit",
