@@ -58,16 +58,13 @@ export type ConditionalResult<T, E = T> = {
     else: E;
 };
 
-interface CustomCompositionParams {
-    properties?: Record<string, AbstractSchema<SchemaGenerics<unknown>>>;
-}
 export interface SerializationParams {
     /**
      * Inside composition (e.g. `allOf`).
      *
      * Pass base type information to prevent unnecessary duplicates.
      */
-    composition?: CustomCompositionParams & {
+    composition?: {
         type: string | null;
         nullable: boolean;
     };
@@ -618,22 +615,6 @@ export abstract class AbstractSchema<
     }
 
     /**
-     * Get custom composition parameters required for generating/optimizing
-     * compositional sub-schemas.
-     *
-     * Child classes MAY override this method, by default it is a NOOP.
-     *
-     * @returns {object} custom composition params
-     */
-    protected getCompositionParams(params: SerializationParams): CustomCompositionParams;
-    /**
-     * @inheritdoc
-     */
-    protected getCompositionParams(): CustomCompositionParams {
-        return {};
-    }
-
-    /**
      * If a schema is declared nullable, but conditions require non-null,
      * do not flag it as nullable (easier to read + optimization).
      *
@@ -798,7 +779,6 @@ export abstract class AbstractSchema<
         const compositionParams = {
             ...params,
             composition: {
-                ...this.getCompositionParams(params),
                 type: schemaType,
                 nullable,
             },

@@ -524,23 +524,6 @@ export class ObjectSchema<
     }
 
     /**
-     * Combine current parameters with parent schema parameters.
-     *
-     * @param {object} params - serialization params
-     * @returns {object} properties
-     */
-    protected override getCompositionParams(params: SerializationParams): {
-        properties: BaseSchemaObject;
-    } {
-        return {
-            properties: {
-                ...params.composition?.properties,
-                ...this.#properties,
-            },
-        };
-    }
-
-    /**
      * @override
      */
     protected override toSchema(params: SerializationParams): JsonSchema<SchemaType<this>> {
