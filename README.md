@@ -259,64 +259,64 @@ Individual schemas _may not_ expose every method, generally due to the result be
 The following methods are available on every Schema:
 
 Method Name | Constructor Parameter | Can be Unset | Changes Types
----|---|---|---
-[title](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.9.1) | [x] | [x] | [ ]
-[description](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.9.1) | [x] | [x] | [ ]
-[default](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.9.2) | [x] | [x] | [ ]
-[deprecated](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.9.3) | [x] | [x] | [ ]
-[deprecated](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.9.3) | [x] | [x] | [ ]
-[example(s)](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.9.5) | [ ] | [ ] | [ ]
-[readOnly](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.9.4) | [x] | [x] | [ ]
-[writeOnly](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.9.4) | [x] | [x] | [ ]
-[allOf](https://json-schema.org/understanding-json-schema/reference/combining.html#allof) | [ ] | [ ] | [x]
-[anyOf](https://json-schema.org/understanding-json-schema/reference/combining.html#anyof) | [ ] | [ ] | [x]
-[oneOf](https://json-schema.org/understanding-json-schema/reference/combining.html#oneof) | [ ] | [ ] | [x]
-[not](https://json-schema.org/understanding-json-schema/reference/combining.html#not) | [ ] | [ ] | [x]
-[if then else](https://json-schema.org/understanding-json-schema/reference/conditionals.html#if-then-else) | [ ] | [ ] | [x]
-[nullable](https://swagger.io/docs/specification/data-models/data-types/#null) | [ ] | [ ] | [x]
+---|:---:|:---:|:---:
+[title](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.9.1) | ✅ | ✅ | ❌
+[description](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.9.1) | ✅ | ✅ | ❌
+[default](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.9.2) | ✅ | ✅ | ❌
+[deprecated](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.9.3) | ✅ | ✅ | ❌
+[deprecated](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.9.3) | ✅ | ✅ | ❌
+[example(s)](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.9.5) | ❌ | ❌ | ❌
+[readOnly](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.9.4) | ✅ | ✅ | ❌
+[writeOnly](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.9.4) | ✅ | ✅ | ❌
+[allOf](https://json-schema.org/understanding-json-schema/reference/combining.html#allof) | ❌ | ❌ | ✅
+[anyOf](https://json-schema.org/understanding-json-schema/reference/combining.html#anyof) | ❌ | ❌ | ✅
+[oneOf](https://json-schema.org/understanding-json-schema/reference/combining.html#oneof) | ❌ | ❌ | ✅
+[not](https://json-schema.org/understanding-json-schema/reference/combining.html#not) | ❌ | ❌ | ✅
+[if then else](https://json-schema.org/understanding-json-schema/reference/conditionals.html#if-then-else) | ❌ | ❌ | ✅
+[nullable](https://swagger.io/docs/specification/data-models/data-types/#null) | ❌ | ❌ | ✅
 
 ### Specific Schema Methods
 
 Schema | Method Name | Constructor Parameter | Can be Unset | Changes Types | OpenAPI 3.0 Support
----|---|---|---|---|---
-ArraySchema | [items](https://json-schema.org/understanding-json-schema/reference/array.html#items) | [x] | [ ] | [x] | [x]
-ArraySchema | [maxItems](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.4.1) | [x] | [x] | [ ] | [x]
-ArraySchema | [minItems](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.4.2) | [x] | [x] | [ ] | [x]
-ArraySchema | [uniqueItems](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.4.3) | [x] | [x] | [ ] | [x]
-ArraySchema | [contains](https://json-schema.org/understanding-json-schema/reference/array.html#contains) | [ ] | [ ] | [x] | [ ]
-ArraySchema | [maxContains](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.4.4) | [x] | [x] | [ ] | [ ]
-ArraySchema | [minContains](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.4.5) | [x] | [x] | [ ] | [ ]
-ArraySchema | [(prepend)prefixItem](https://json-schema.org/understanding-json-schema/reference/array.html#tuple-validation) | [ ] | [ ] | [x] | [ ]
-EnumSchema | [enum(s)](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.1.2) | [x] | [ ] | [x] | [x]
-NumberSchema | [type](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.1.1) | [x] | [x] | [ ] | [x]
-NumberSchema | [multipleOf](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.2.1) | [x] | [ ] | [ ] | [x]
-NumberSchema | [maximum](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.2.2) | [x] | [x] | [ ] | [x]
-NumberSchema | [exclusiveMaximum](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.2.3) | [x] | [x] | [ ] | [x]
-NumberSchema | [minimum](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.2.4) | [x] | [x] | [ ] | [x]
-NumberSchema | [exclusiveMinimum](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.2.5) | [x] | [x] | [ ] | [x]
-ObjectSchema | [properties](https://json-schema.org/understanding-json-schema/reference/object.html#properties) | [x] | [x] | [x] | [x]
-ObjectSchema | [maxProperties](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.5.1) | [x] | [x] | [ ] | [x]
-ObjectSchema | [minProperties](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.5.2) | [x] | [x] | [ ] | [x]
-ObjectSchema | [required](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.5.3) | [x] | [x] | [x] | [x]
-ObjectSchema | [additionalProperties](https://json-schema.org/understanding-json-schema/reference/object.html#additional-properties) | [x] | [x] | [x] | [x]
-ObjectSchema | [patternProperties](https://json-schema.org/understanding-json-schema/reference/object.html#pattern-properties) | [ ] | [x] | [x] | [ ]
-ObjectSchema | [dependentRequired](https://json-schema.org/understanding-json-schema/reference/conditionals.html#dependentrequired) | [ ] | [ ] | [x] | [x]
-ObjectSchema | [dependentSchemas](https://json-schema.org/understanding-json-schema/reference/conditionals.html#dependentschemas) | [ ] | [ ] | [x] | [x]
-ObjectSchema | [unevaluatedProperties](https://json-schema.org/understanding-json-schema/reference/object.html#unevaluated-properties) | [x] | [ ] | [ ] | [ ]
-StringSchema | [format](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.7) | [x] | [x] | [ ] | [x]
-StringSchema | [maxLength](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.3.1) | [x] | [x] | [ ] | [x]
-StringSchema | [minLength](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.3.1) | [x] | [x] | [ ] | [x]
-StringSchema | [pattern](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.3.3) | [x] | [ ] | [ ] | [x]
-StringSchema | startsWith | [ ] | [ ] | [x] | [x]
-StringSchema | endsWith | [ ] | [ ] | [x] | [x]
-StringSchema | contains | [ ] | [ ] | [x] | [x]
-StringSchema | [contentEncoding](https://json-schema.org/understanding-json-schema/reference/non_json_data.html#contentencoding) | [x] | [x] | [ ] | [x]
-StringSchema | [contentMediaType](https://json-schema.org/understanding-json-schema/reference/non_json_data.html#contentmediatype) | [x] | [x] | [ ] | [x]
-TupleSchema | [uniqueItems](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.4.3) | [x] | [x] | [ ] | [x]
-TupleSchema | [contains](https://json-schema.org/understanding-json-schema/reference/array.html#contains) | [ ] | [ ] | [x] | [ ]
-TupleSchema | [maxContains](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.4.4) | [x] | [x] | [ ] | [ ]
-TupleSchema | [minContains](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.4.5) | [x] | [x] | [ ] | [ ]
-TupleSchema | [(prepend)prefixItem](https://json-schema.org/understanding-json-schema/reference/array.html#tuple-validation) | [ ] | [ ] | [x] | [ ]
+---|---|:---:|:---:|:---:|:---:
+ArraySchema | [items](https://json-schema.org/understanding-json-schema/reference/array.html#items) | ✅ | ❌ | ✅ | ✅
+ArraySchema | [maxItems](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.4.1) | ✅ | ✅ | ❌ | ✅
+ArraySchema | [minItems](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.4.2) | ✅ | ✅ | ❌ | ✅
+ArraySchema | [uniqueItems](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.4.3) | ✅ | ✅ | ❌ | ✅
+ArraySchema | [contains](https://json-schema.org/understanding-json-schema/reference/array.html#contains) | ❌ | ❌ | ✅ | ❌
+ArraySchema | [maxContains](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.4.4) | ✅ | ✅ | ❌ | ❌
+ArraySchema | [minContains](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.4.5) | ✅ | ✅ | ❌ | ❌
+ArraySchema | [(prepend)prefixItem](https://json-schema.org/understanding-json-schema/reference/array.html#tuple-validation) | ❌ | ❌ | ✅ | ❌
+EnumSchema | [enum(s)](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.1.2) | ✅ | ❌ | ✅ | ✅
+NumberSchema | [type](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.1.1) | ✅ | ✅ | ❌ | ✅
+NumberSchema | [multipleOf](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.2.1) | ✅ | ❌ | ❌ | ✅
+NumberSchema | [maximum](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.2.2) | ✅ | ✅ | ❌ | ✅
+NumberSchema | [exclusiveMaximum](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.2.3) | ✅ | ✅ | ❌ | ✅
+NumberSchema | [minimum](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.2.4) | ✅ | ✅ | ❌ | ✅
+NumberSchema | [exclusiveMinimum](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.2.5) | ✅ | ✅ | ❌ | ✅
+ObjectSchema | [properties](https://json-schema.org/understanding-json-schema/reference/object.html#properties) | ✅ | ✅ | ✅ | ✅
+ObjectSchema | [maxProperties](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.5.1) | ✅ | ✅ | ❌ | ✅
+ObjectSchema | [minProperties](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.5.2) | ✅ | ✅ | ❌ | ✅
+ObjectSchema | [required](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.5.3) | ✅ | ✅ | ✅ | ✅
+ObjectSchema | [additionalProperties](https://json-schema.org/understanding-json-schema/reference/object.html#additional-properties) | ✅ | ✅ | ✅ | ✅
+ObjectSchema | [patternProperties](https://json-schema.org/understanding-json-schema/reference/object.html#pattern-properties) | ❌ | ✅ | ✅ | ❌
+ObjectSchema | [dependentRequired](https://json-schema.org/understanding-json-schema/reference/conditionals.html#dependentrequired) | ❌ | ❌ | ✅ | ✅
+ObjectSchema | [dependentSchemas](https://json-schema.org/understanding-json-schema/reference/conditionals.html#dependentschemas) | ❌ | ❌ | ✅ | ✅
+ObjectSchema | [unevaluatedProperties](https://json-schema.org/understanding-json-schema/reference/object.html#unevaluated-properties) | ✅ | ❌ | ❌ | ❌
+StringSchema | [format](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.7) | ✅ | ✅ | ❌ | ✅
+StringSchema | [maxLength](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.3.1) | ✅ | ✅ | ❌ | ✅
+StringSchema | [minLength](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.3.1) | ✅ | ✅ | ❌ | ✅
+StringSchema | [pattern](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.3.3) | ✅ | ❌ | ❌ | ✅
+StringSchema | startsWith | ❌ | ❌ | ✅ | ✅
+StringSchema | endsWith | ❌ | ❌ | ✅ | ✅
+StringSchema | contains | ❌ | ❌ | ✅ | ✅
+StringSchema | [contentEncoding](https://json-schema.org/understanding-json-schema/reference/non_json_data.html#contentencoding) | ✅ | ✅ | ❌ | ✅
+StringSchema | [contentMediaType](https://json-schema.org/understanding-json-schema/reference/non_json_data.html#contentmediatype) | ✅ | ✅ | ❌ | ✅
+TupleSchema | [uniqueItems](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.4.3) | ✅ | ✅ | ❌ | ✅
+TupleSchema | [contains](https://json-schema.org/understanding-json-schema/reference/array.html#contains) | ❌ | ❌ | ✅ | ❌
+TupleSchema | [maxContains](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.4.4) | ✅ | ✅ | ❌ | ❌
+TupleSchema | [minContains](https://json-schema.org/draft/2020-12/json-schema-validation.html#rfc.section.6.4.5) | ✅ | ✅ | ❌ | ❌
+TupleSchema | [(prepend)prefixItem](https://json-schema.org/understanding-json-schema/reference/array.html#tuple-validation) | ❌ | ❌ | ✅ | ❌
 
 ### Implementation Notes
 * ObjectSchema.patternProperties takes advantage of the string type of the keys. However the key itself is a regular expression pattern, and cannot be interpretted directly. So the key should be wrapped with the `PatternProperties` helper type.
