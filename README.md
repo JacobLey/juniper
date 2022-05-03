@@ -29,7 +29,7 @@ Juniper is a JSON Schema generator that focuses on solving two problems:
 1) Writing strict and maintainable JSON Schemas.
 2) Using those enforced schemas as Typescript interfaces.
 
-Juniper primarily supports [Draft 2020-12] JSON Schema, but also supports OpenAPI 3.0 as much as possible.
+Juniper primarily supports [Draft 2020-12](https://json-schema.org/draft/2020-12/json-schema-core.html) JSON Schema, but also supports OpenAPI 3.0 as much as possible.
 
 Juniper does not provide any JSON Schema validation. Please use a validation library such as [Ajv](https://www.npmjs.com/package/ajv) for any validation. All examples in this documentation will use Ajv.
 
@@ -180,8 +180,8 @@ Schemas come with a couple caveats:
 * `NumberSchema` can emit type of `integer` and `number` (default), based on the `type` field. It does not impact TS typings.
 * `MergeSchema` without "merging" anything can be used as a generic `unknown`. Using methods like `allOf` and `anyOf` can generate a mix of unrelated types like `number | string`.
 * `TupleSchema` is a convenience wrapper around `ArraySchema` ensuring "strict" tuples. The same functionality can be achieved via raw `ArraySchema`.
-* `CustomSchema` is used to break out of the Juniper environment. It's usage is generally discouraged, but may be the best solution when dealing with instances where some JSON Schemas + typings already exist, and for gradual adoption of Juniper.
-* There is no `any` schema, as `any` is generally discouraged in favor of `unknown` (`MergeSchema`). If `any` is truly required, `CustomSchema` may be used (default output is "always valid" empty JSON Schema)
+* `CustomSchema` is used to break out of the Juniper environment. It's usage is discouraged, but may be the best solution when dealing with instances where some JSON Schemas + typings already exist, and for gradual adoption of Juniper.
+* There is no `any` schema, as `any` is discouraged in favor of `unknown` (`MergeSchema`). If `any` is truly required, `CustomSchema` may be used (default output is "always valid" empty JSON Schema)
 
 <a name="api"></a>
 ## API
@@ -209,7 +209,7 @@ Every constructor takes a single options object, to set properties on the JSON o
 
 Not _every_ property can be set in the constructor, and must be set via a method. This limitation is usually due to restrictions of type inference on the constructor alone.
 
-Schema Constructors make heavy use of [Typescript Generics](https://www.typescriptlang.org/docs/handbook/2/generics.html). The usage of these generics should generally be seen as internal, and make break in unannounced ways in future releases. The one exception is `CustomSchema`, whose type is provided via the Generic.
+Schema Constructors make heavy use of [Typescript Generics](https://www.typescriptlang.org/docs/handbook/2/generics.html). The usage of these generics should be seen as internal, and may break in unannounced ways in future releases. The one exception is `CustomSchema`, whose type is provided via the Generic parameter.
 
 Juniper instances are immutable, so every method returns a _clone_ of the original instance, with the provided changes.
 
@@ -345,10 +345,10 @@ TupleSchema | [(prepend)prefixItem](https://json-schema.org/understanding-json-s
 
 [Json Schema](https://json-schema.org/) is a powerful vocabulary for describing data formats that is both human and machine readable.
 
-However, when it comes to actually generating and using these schemas, a few issues pop up:
+However, when it comes to generating and using these schemas, a few issues pop up:
 
 * Strictness
-  * Validation of a Json Schema is quite loose, and does not actually enforce sensible schemas.
+  * Validation of a Json Schema is quite loose, and does not enforce sensible schemas.
   * For example:
     * ```json
       {
@@ -378,10 +378,10 @@ However, when it comes to actually generating and using these schemas, a few iss
   * Juniper solves this issue by strict typings on the schema generators. You must explicitly declare the type of the schema (e.g. `object` or `number`) and only the properties related to that schema may be set.
 * DRY
   * Good code should be DRY ([Don't repeat yourself](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself)). However, JSON Schema itself is just JSON, it doesn't mean anything in a Typescript runtime. Manually writing Typescript interfaces to match a JSON schema (and vice versa) quickly becomes a maintenance nightmare and opens up opportunities to mistype a schema.
-  * Juniper resolves this issue by generating the JSON Schema and the Typescript types at the same time. Typescript types are impacted by JSON Schema attributes where possible, but does not limit schema generation due to that.
+  * Juniper resolves this issue by generating the JSON Schema and the Typescript types at the same time. Typescript interfaces are emitted by JSON Schema attributes where possible, but does not limit schema generation due to that.
   * See [Comparisons](#comparisons) for a list of alternatives that help DRY JSON Schema generation.
 * Backwards Compatibility
-  * Json Schema comes in multiple "versions", often referred to as drafts. While these version generally follow the same pattern, some changes are breaking and are non-trivial to fix. Perhaps the most infamous is [OpenApi's `nullable` keyword over `type: 'null'`](https://swagger.io/docs/specification/data-models/data-types/#null). When generating Json Schemas for multiple environments, it can be tricky to maintain usage of the correct keywords.
+  * Json Schema comes in multiple "versions", often referred to as drafts. While these versions generally follow the patterns set by predecessors, some changes are breaking and are non-trivial to fix. Perhaps the most infamous is [OpenApi's `nullable` keyword over `type: 'null'`](https://swagger.io/docs/specification/data-models/data-types/#null). When generating Json Schemas for multiple environments, it can be tricky to maintain usage of the correct keywords.
   * By generating the JSON Schema dynamically, Juniper is able to adjust the outputted schema to fit the environment.
     * Presently Juniper supports Draft 2020-12 (default) and OpenAPI 3.0.
 
@@ -393,9 +393,9 @@ Juniper has the following goals for generating JSON Schema:
 * JSON Schema compatibility
   * Hopefully obvious, Juniper should expose the functionality of every JSON Schema keyword.
 * Strict Typing
-  * As much as possible, any changes to a JSON Schema that _can_ be reflected as a TS Type should alter the emitted type.
+  * As much as possible, any changes to a JSON Schema that _can_ be reflected as a TS Type should alter the emitted interface.
 * Generate Strict Schemas
-  * "Strictness" is generally defined by the [Ajv Validator](https://ajv.js.org/strict-mode.html). Any outputted JSON Schema should be able to be passed to AJV with `{ strict: true }` with no errors.
+  * "Strictness" is defined by the [Ajv Validator](https://ajv.js.org/strict-mode.html). Any outputted JSON Schema should be able to be passed to AJV with `{ strict: true }` with no errors.
 * Enforce best practice
   * JSON Schema itself has little restrictions of what a valid schema is, and even with "strict" schemas can create nonsensical schemas. Juniper is opinionated in only generating schemas that make logical sense.
   * For example `BooleanSchema` does not allow setting the `not` keyword. Given there are only at most 3 possible values (`true`, `false`, and potentially `null`) if it is desired to restrict the schema further, it is recommended to use the `EnumSchema` instead.
