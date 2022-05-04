@@ -7,7 +7,7 @@ jobs:
   build-and-test:
     uses: ./.github/workflows/build-and-test.yaml
 
-  publish-alpha:
+  publish-canary:
     needs:
       - build-and-test
     runs-on: ubuntu-latest
@@ -31,7 +31,7 @@ jobs:
 
       - run: echo //registry.npmjs.org/:_authToken=${{ secrets.NPM_AUTH_TOKEN }} >> ~/.npmrc
 
-      - run: node ./dist/scripts/publish-alpha.js
+      - run: node ./dist/scripts/publish-canary.js
         env:
           GIT_SHA: ${{ github.sha }}
           GIT_BRANCH: ${{ github.ref_name }}
