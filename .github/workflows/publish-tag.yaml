@@ -27,7 +27,7 @@ jobs:
           npm dist-tag rm juniper ignore
 
       - run: |
-          if [ -z $(npm view junipert@'>${{ github.ref_name }}' version) ]
+          if [ -z $(npm view juniper@'>${{ github.ref_name }}' version) ]
             then
               npm dist-tag add juniper@${{ github.ref_name }} latest
           fi
