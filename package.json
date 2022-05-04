@@ -1,7 +1,7 @@
 {
   "name": "juniper",
   "version": "1.0.0",
-  "description": "Dynamically generate Typescript emitting JSON Schemas",
+  "description": "ESM JSON Schema builder for static Typescript inference.",
   "engines": {
     "node": ">=14",
     "npm": ">=7"
