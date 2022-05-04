@@ -9,7 +9,6 @@ on:
 jobs:
   install:
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request' || github.repository == 'JacobLey/juniper'
     steps:
       - uses: actions/checkout@v3
 
