@@ -17,6 +17,7 @@
 - [Usage](#usage)
 - [Schemas](#schemas)
 - [API](#api)
+- [Recipes](#recipes)
 - [Motivation (The JSON Schema Problem)](#motivation-the-json-schema-problem)
 - [Objectives](#objectives)
 - [Limitations](#limitations)
@@ -414,6 +415,30 @@ TupleSchema | [(prepend)prefixItem](https://json-schema.org/understanding-json-s
     // Record<string, unknown>
     type IndexedObject = SchemaType<typeof indexed>;
     ```
+
+<a name="recipes"></a>
+## Recipes
+
+Some helpful schema recipes to get started and provide inspiration of how to proceed.
+
+### Typescript Enum
+
+Typescript `enums` are actually object dictionaries that sometimes have [reverse mappings](https://www.typescriptlang.org/docs/handbook/enums.html#reverse-mappings) so cannot trivially get list of all values via something like `Object.values`. The [enum-to-array](https://www.npmjs.com/package/enum-to-array) can resolve that.
+
+```ts
+import { enumToValues } from 'enum-to-array';
+import { enumSchema } from 'juniper';
+
+MyEnum {
+    FOO = 'BAR',
+    ABC = 123,
+}
+
+enumSchema({
+    enum: enumToValues(MyEnum)
+}).toJSON();
+// { enum: ['BAR', 123] }
+```
 
 <a name="motivation-the-json-schema-problem"></a>
 ## Motivation (The JSON Schema Problem)
