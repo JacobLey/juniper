@@ -4,9 +4,9 @@ import {
     type SchemaGenerics,
     type SchemaParams,
     type SerializationParams,
-} from './lib/schema.js';
-import type { AbstractClean, ConditionalNullable, JsonSchema, Nullable, SchemaType } from './lib/types.js';
-import { mergeAllOf } from './lib/utils.js';
+} from '../lib/schema.js';
+import type { AbstractClean, ConditionalNullable, JsonSchema, Nullable, SchemaType } from '../lib/types.js';
+import { mergeAllOf } from '../lib/utils.js';
 
 interface LimitWithExclusive {
     value: number;

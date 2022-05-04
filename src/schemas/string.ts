@@ -1,14 +1,14 @@
 import escapeStringRegexp from 'escape-string-regexp';
-import { maxInt } from './lib/constants.js';
+import { maxInt } from '../lib/constants.js';
 import {
     AbstractSchema,
     type ConditionalResult,
     type SchemaGenerics,
     type SchemaParams,
     type SerializationParams,
-} from './lib/schema.js';
-import type { AbstractClean, ConditionalNullable, JsonSchema, Nullable, SchemaType } from './lib/types.js';
-import { mergeAllOf } from './lib/utils.js';
+} from '../lib/schema.js';
+import type { AbstractClean, ConditionalNullable, JsonSchema, Nullable, SchemaType } from '../lib/types.js';
+import { mergeAllOf } from '../lib/utils.js';
 
 interface StringParams<
     T extends string,

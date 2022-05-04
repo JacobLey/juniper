@@ -6,7 +6,7 @@ import {
     neverSchema,
     type SchemaType,
     stringSchema,
-} from '../../index.js';
+} from '../../../index.js';
 
 export const ArraySchemaSpec = {
 

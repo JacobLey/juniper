@@ -1,7 +1,7 @@
 import Ajv from 'ajv/dist/2020.js';
 import { expect } from 'chai';
 import { expectTypeOf } from 'expect-type';
-import { type EnumSchema, enumSchema, type SchemaType } from '../../index.js';
+import { type EnumSchema, enumSchema, type SchemaType } from '../../../index.js';
 
 interface EnumSchemaTest {
     schema: EnumSchema<unknown>;

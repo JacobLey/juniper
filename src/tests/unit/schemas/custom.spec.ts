@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { expectTypeOf } from 'expect-type';
-import { customSchema, type SchemaType } from '../../index.js';
-import type { AvailableProperties } from '../types.js';
+import { customSchema, type SchemaType } from '../../../index.js';
+import type { AvailableProperties } from '../../types.js';
 
 export const CustomSchemaSpec = {
 

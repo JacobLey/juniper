@@ -5,7 +5,7 @@ import {
     type Schema,
     type SchemaType,
 } from '../../../index.js';
-import type { ConditionalNullable, ToBaseType } from '../../../schemas/lib/types.js';
+import type { ConditionalNullable, ToBaseType } from '../../../lib/types.js';
 
 // These tests will only fail at compile time (if at all).
 export const TypesSpec = {

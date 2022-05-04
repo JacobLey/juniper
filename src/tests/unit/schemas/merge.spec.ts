@@ -1,7 +1,7 @@
 import Ajv from 'ajv/dist/2020.js';
 import { expect } from 'chai';
 import { expectTypeOf } from 'expect-type';
-import { enumSchema, mergeSchema, numberSchema, type SchemaType, stringSchema } from '../../index.js';
+import { enumSchema, mergeSchema, numberSchema, type SchemaType, stringSchema } from '../../../index.js';
 
 export const MergeSchemaSpec = {
 

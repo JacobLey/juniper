@@ -1,11 +1,11 @@
-import { maxInt } from './lib/constants.js';
+import { maxInt } from '../lib/constants.js';
 import {
     AbstractSchema,
     type ConditionalResult,
     type SchemaGenerics,
     type SchemaParams,
     type SerializationParams,
-} from './lib/schema.js';
+} from '../lib/schema.js';
 import type {
     AbstractStrip,
     ConditionalNullable,
@@ -15,8 +15,8 @@ import type {
     Nullable,
     Schema,
     SchemaType,
-} from './lib/types.js';
-import { mergeAllOf } from './lib/utils.js';
+} from '../lib/types.js';
+import { mergeAllOf } from '../lib/utils.js';
 import { MergeSchema } from './merge.js';
 import { NeverSchema } from './never.js';
 

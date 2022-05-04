@@ -3,8 +3,8 @@ import {
     type ConditionalResult,
     type SchemaGenerics,
     type SchemaParams,
-} from './lib/schema.js';
-import type { Schema, SchemaType } from './lib/types.js';
+} from '../lib/schema.js';
+import type { Schema, SchemaType } from '../lib/types.js';
 
 /**
  * Schema for defining "merged" `anyOf` + `oneOf` sub-schemas.

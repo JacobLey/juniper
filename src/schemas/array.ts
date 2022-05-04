@@ -1,11 +1,11 @@
-import { maxInt } from './lib/constants.js';
+import { maxInt } from '../lib/constants.js';
 import {
     AbstractSchema,
     type ConditionalResult,
     type SchemaGenerics,
     type SchemaParams,
     type SerializationParams,
-} from './lib/schema.js';
+} from '../lib/schema.js';
 import type {
     ConditionalNullable,
     IsAny,
@@ -15,7 +15,7 @@ import type {
     Schema,
     SchemaType,
     ToBaseType,
-} from './lib/types.js';
+} from '../lib/types.js';
 import { NeverSchema } from './never.js';
 
 const containsSym = Symbol('contains');

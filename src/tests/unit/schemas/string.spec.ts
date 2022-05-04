@@ -1,7 +1,7 @@
 import Ajv from 'ajv/dist/2020.js';
 import { expect } from 'chai';
 import { expectTypeOf } from 'expect-type';
-import { type SchemaType, type StringSchema, stringSchema } from '../../index.js';
+import { type SchemaType, type StringSchema, stringSchema } from '../../../index.js';
 
 interface StringSchemaTest extends Mocha.Context {
     schema: StringSchema<string>;

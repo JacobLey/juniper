@@ -1,11 +1,11 @@
+import type { AbstractSchema, ConditionalResult, SchemaGenerics } from '../lib/schema.js';
+import type { ConditionalNullable, IsNever, Schema, SchemaType, ToBaseType } from '../lib/types.js';
 import {
     type ArrayParams,
     ArraySchema,
     type ArrayType,
     prefixItemsSym,
 } from './array.js';
-import type { AbstractSchema, ConditionalResult, SchemaGenerics } from './lib/schema.js';
-import type { ConditionalNullable, IsNever, Schema, SchemaType, ToBaseType } from './lib/types.js';
 
 interface TupleParams<
     T,

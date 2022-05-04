@@ -3,8 +3,8 @@ import {
     type SchemaGenerics,
     type SchemaParams,
     type SerializationParams,
-} from './lib/schema.js';
-import type { JsonSchema, SchemaType } from './lib/types.js';
+} from '../lib/schema.js';
+import type { JsonSchema, SchemaType } from '../lib/types.js';
 
 /**
  * Schema for defining null literal.
