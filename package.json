@@ -11,6 +11,9 @@
   "license": "MIT",
   "repository": "jacobley/juniper",
   "homepage": "https://github.com/jacobley/juniper#readme",
+  "bugs": {
+    "url": "https://github.com/jacobley/juniper/issues"
+  },
   "keywords": [
     "JSON",
     "schema",
