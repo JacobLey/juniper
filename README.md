@@ -100,7 +100,7 @@ if (validator(unknownUserInput)) {
 <a name="usage"></a>
 ## Usage
 
-Juniper is an ESM module. That means it _must_ be `import`ed. To load from a CJS module, use dynamic import `import { stringSchema } = await import('juniper');`.
+Juniper is an ESM module. That means it _must_ be `import`ed. To load from a CJS module, use dynamic import `const { stringSchema } = await import('juniper');`.
 
 For every schema exported, there is both a class and functional constructor for each schema. The class can be instantiated directly via the `new` keyword, or via the static `create` method. The functional constructor is a reference to the `create` method. All three are perfectly valid ways of creating a schema, and entirely up to you to prefer OOP vs functional programming styles.
 
